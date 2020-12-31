@@ -14,7 +14,6 @@ class About extends Component {
                 {this.state.showComponent &&
                     <Alert variant="success" show={this.state.showComponent} dismissible="true" onClose={() => this.setState({ showComponent: false })}>
                         <Alert.Heading>Hey! Thanks for checking out the About section!</Alert.Heading>
-
                         <p>
                             This website was made as a part of my Software Development project. Literal blood and sweat were invested in making of it!
                         </p>
@@ -29,7 +28,7 @@ class About extends Component {
                     <Col>
                         <h3>What is this website?</h3>
                         <p>
-                            Exif-Toolset provides a variety of tools to manipulate, read and remove EXIF data from the pictures
+                            Exif-Toolset provides a way to <strike>manipulate, remove and</strike> read EXIF data from the pictures
                         </p>
                     </Col>
 
@@ -37,6 +36,16 @@ class About extends Component {
                         <h3>What is EXIF?</h3>
                         <p>
                             According to google, Exchangeable image file format (officially Exif, according to JEIDA/JEITA/CIPA specifications) is a standard that specifies the formats for images, sound, and ancillary tags used by digital cameras (including smartphones), scanners and other systems handling image and sound files recorded by digital cameras.
+                        </p>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col>
+                        <h3>Aren't there loads of those services? Why should I use this one?</h3>
+                        <p>
+                            Most of the other services require you to actually upload the file to their server, which does who-knows-what. They might be storing your picture and not even tell you.
+                            This service achieves the same, but client-side - Meaning no picture is ever sent to the internet!
                         </p>
                     </Col>
                 </Row>
@@ -60,9 +69,9 @@ class About extends Component {
                         </p>
 
                         <h5>Does it mean I have to remove all of my Facebook and Instagram photos?!</h5>
-                        <p>No! Good news is, that all of the major social media already strips that data for you!<br /><br />
+                        <p>No! Good news is, that all of the major social media websites already strips that data for you!<br /><br />
 
-                        This tool lets you view such data and if necessary, remove it - There's still a possibility that Facebook or other big corporations collect and resell EXIF data before removing it.
+                        There's still a possibility that Facebook or other big corporations collect and resell EXIF data before removing it, so this tool gives you a chance to check if your photo contains any EXIF data.
                         </p>
 
                         <h5>What stops you from collecting such data?</h5>
