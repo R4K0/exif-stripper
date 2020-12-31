@@ -66,15 +66,14 @@ function DisplayExif(props) {
 
                 <tbody>
                     {
-                        // This helper helps me divide the array into pages
-                        paginator(splitTags, activePage, 10).data.map(key => {
+                        splitTags.length > 0 ? paginator(splitTags, activePage, 10).data.map(key => {
                             return (
                                 <tr key={`exif-${key}`}>
                                     <td>{key}</td>
                                     <td>{props.exif.tags[key]}</td>
                                 </tr>
                             )
-                        })
+                        }) : <tr><td colSpan="2" className="text-center">No EXIF data to display!</td></tr>
                     }
                 </tbody>
             </Table>
