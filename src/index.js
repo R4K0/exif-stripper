@@ -5,16 +5,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Navigation from "./components/navbar";
-import { Navbar } from 'react-bootstrap';
+import { Router } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Navigation />
-    <App />
+    <div style={{flex: 1}} className="content">
+      <Navigation />
+      <App />
+    </div>
 
-    <Navbar fluid fixed="bottom" className="justify-content-center">
-      Made with ❤️ by Milosz Milewski using React
-    </Navbar>
+
+    <div className="text-center" style={{marginBottom: '1rem'}}>
+      Made with ❤️ by&nbsp;<a href="https://www.linkedin.com/in/milosz-milewski">Milosz Milewski</a>&nbsp;using React
+    </div>
   </React.StrictMode>,
   document.getElementById('root')
 );
