@@ -7,8 +7,14 @@ import DisplayExif from './../components/exifdisplay';
 function UploadPage() {
     const [currentImage, setImage] = useState();
     const [exifData, setDataExif] = useState(false);
+    const [error, setError] = useState();
 
-    const onDrop = useCallback(file => {
+    const onDrop = useCallback((file, err) => {
+        if (err[0]?.errors?.length > 0) {
+            setError(err[0].errors[0].message);
+            return;
+        }
+
         var file = file[0];
         const fileReader = new FileReader();
         const binaryFileReader = new FileReader()
@@ -17,34 +23,56 @@ function UploadPage() {
             var parser = ExifParser.create(e.target.result)
             parser.enableSimpleValues(true) // Cast all the values to be human-readable.
 
-            var result = parser.parse()
+            var result
+            try {
+                result = parser.parse()
+
+            } catch (err) {
+                setError("File is corruped/File extension is incompatible")
+                return;
+            }
 
             setDataExif(result)
         }
+
         binaryFileReader.readAsArrayBuffer(file)
 
         fileReader.onload = (e) => {
+            console.log(e.target);
+
             setImage(e.target.result);
         }
 
         fileReader.readAsDataURL(file)
     }, []);
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: 'image/jpeg, image/png' });
 
 
     return (
         <Container>
+            {
+                error ?
+                    <Alert variant="danger" dismissible onClose={() => setError(null)} >
+                        <Alert.Heading>
+                            Oh no!
+                    </Alert.Heading>
+
+                        <p>{error}</p>
+                    </Alert> : undefined
+            }
+
+
             <Row>
                 <Col>
                     <h4>EXIF Inspector</h4>
-                    <div {...getRootProps()} style={{ borderStyle: currentImage ? "none" : "dotted", textAlign: "center" }}>
+                    <div {...getRootProps()} style={{ borderStyle: currentImage ? "none" : "dotted" }} className={`${isDragActive && 'bg-secondary' || (!currentImage && 'bg-primary' || '')} text-white text-center`}>
                         <input {...getInputProps()}></input>
-                        <img src={currentImage} style={{ maxWidth: "200px" }}></img>
-
-                        {isDragActive ?
-                            <p>Drop the image here!</p> : !currentImage ? <p>Drag and drop your image here (or click here)</p> : undefined
+                        {
+                            currentImage ? <img src={currentImage} style={{ maxWidth: "200px" }}></img> : undefined
                         }
+
+                        {isDragActive ? <p>Drop the image here!</p> : !currentImage ? <p>Drag and drop your image here (or click here)</p> : undefined}
                     </div>
                 </Col>
 
@@ -55,14 +83,15 @@ function UploadPage() {
                         </Alert.Heading>
 
                         <p>Each usage of this service will be logged to our external database.</p>
+                        <p>This is only done to satisfy my colleges' submission requirements and for statistics purpose.</p>
                         <hr />
 
                         <Alert.Heading>What is being saved?</Alert.Heading>
-                        <p>Your EXIF data is not being saved. All that is being saved is your IP address and the date and time at which you've interacted with this service</p>
+                        <p><strong>Neither</strong> your EXIF data or the picture is being saved. All that is being saved is your IP address and the date and time at which you've interacted with this service</p>
                         <p>You are <strong>able</strong> to anonymise this data (remove the IP address) or delete it altogether from <a href="/about">this</a> page</p>
                     </Alert>
 
-                    {!currentImage ?
+                    {!exifData ?
                         <Alert variant="info">
                             <p>To view the photos' EXIF information, please drag and drop your file on the box to the left.</p>
                         </Alert>
