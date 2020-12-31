@@ -31,7 +31,7 @@ function PrivacyPage() {
                     await instance.delete("statistics/delete")
                 } catch(err) {
                     setAlertType("danger")
-                    setAlertShow(err.response.data)
+                    setAlertShow(err.response?.data || "An error occured :(")
                     return;
                 }
 
@@ -43,7 +43,7 @@ function PrivacyPage() {
                     await instance.post("statistics/anonymize")
                 } catch(err) {
                     setAlertType("danger")
-                    setAlertShow(err.response.data)
+                    setAlertShow(err.response?.data || "An error occured :(")
                     return;
                 }
 
