@@ -38,8 +38,6 @@ function UploadPage() {
         binaryFileReader.readAsArrayBuffer(file)
 
         fileReader.onload = (e) => {
-            console.log(e.target);
-
             setImage(e.target.result);
         }
 
@@ -55,8 +53,8 @@ function UploadPage() {
                 error ?
                     <Alert variant="danger" dismissible onClose={() => setError(null)} >
                         <Alert.Heading>
-                            Oh no!
-                    </Alert.Heading>
+                            ❌ Oh no!
+                        </Alert.Heading>
 
                         <p>{error}</p>
                     </Alert> : undefined
