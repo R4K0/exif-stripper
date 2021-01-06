@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Alert, Card, Col, Container, Row } from "react-bootstrap";
+import { Alert, Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useDropzone } from "react-dropzone";
 import ExifParser from "exif-parser";
 import DisplayExif from './../components/exifdisplay';
@@ -16,6 +16,8 @@ function UploadPage() {
     const [exifData, setDataExif] = useState(false);
     const [error, setError] = useState();
     const [recordAmount, setRecords] = useState(undefined);
+    const [NoEXIFURI, setNoExifURI] = useState(undefined);
+
 
     // This is equivalent of componentDidMount, a hacky one, though. 
     useEffect(() => {
@@ -28,6 +30,15 @@ function UploadPage() {
             console.log(err);
         })
     }, [])
+
+
+    //source: https://stackoverflow.com/questions/3916191/download-data-url-file
+    function download(dataurl, filename) {
+        var a = document.createElement("a");
+        a.href = dataurl;
+        a.setAttribute("download", filename);
+        a.click();
+    }
 
     const onDrop = useCallback((file, err) => {
         // We only care about the first file.
@@ -47,18 +58,6 @@ function UploadPage() {
         // and I can't define a callback per type of load.
         const fileReader = new FileReader();
         const arrayBufferReader = new FileReader()
-        const binaryReader = new FileReader()
-
-        // with this one I am trying to remove the exif data.
-        binaryReader.onload = (e) => {
-            console.log(file);
-            var result = piex.remove(e.target.result)
-
-            var blob = new Blob([result])
-
-            console.log(blob);
-        }
-        binaryReader.readAsBinaryString(file)
 
         // with this one I am trying to extract the exif data for display
         arrayBufferReader.onload = (e) => {
@@ -74,20 +73,27 @@ function UploadPage() {
             }
 
             setDataExif(result)
+
+            console.log();
         }
 
         // With this one I am simply setting the image as the displayed image.
         arrayBufferReader.readAsArrayBuffer(file)
         fileReader.onload = (e) => {
-            setImage(e.target.result);
+            try{
+                var result = piex.remove(e.target.result)
+                setImage(e.target.result);
+
+                setNoExifURI({ name: `noexif-${file.name}`, data: result });
+            } catch(e) {
+
+            }
         }
 
         fileReader.readAsDataURL(file)
     }, []);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: 'image/jpeg' });
-
-
     return (
         <Container>
             {/* Error is not visible if error is undefined */}
@@ -109,14 +115,23 @@ function UploadPage() {
                     <h4>EXIF Inspector</h4>
                     <Card {...getRootProps()} className={`${isDragActive && 'bg-secondary' || 'bg-primary'} text-white d-flex align-items-center justify-content-center h-25`} >
                         <input {...getInputProps()}></input>
-                        {isDragActive ? <span>Drop the image here!</span> : <span>Drag and drop your image here (or click here)</span> }
+                        {isDragActive ? <span>Drop the image here!</span> : <span>Drag and drop your image here (or click here)</span>}
                     </Card>
 
-                    <div className="d-flex justify-content-center mt-3" style={{borderStyle: currentImage ? "groove" : "none"}}>
+                    <div className="d-flex justify-content-center mt-3" style={{ borderStyle: currentImage ? "groove" : "none" }}>
                         {
                             currentImage ? <img src={currentImage} style={{ maxWidth: "400px", maxHeight: "300px" }}></img> : undefined
                         }
                     </div>
+
+                    <div className="d-flex justify-content-center mt-3" >
+                        {
+                            NoEXIFURI && exifData!= false && Object.keys(exifData.tags).length > 0 ? <Button className="btn-success" onClick={() => {
+                                download(NoEXIFURI.data, NoEXIFURI.name)
+                            }}>Download the image with EXIF data stripped!</Button> : undefined
+                        }
+                    </div>
+
                 </Col>
 
                 <Col>
@@ -133,6 +148,7 @@ function UploadPage() {
                         <p><strong>Neither</strong> your EXIF data or the picture is being saved. All that is being saved is your IP address and the date and time at which you've interacted with this service</p>
                         <p>You are <strong>able</strong> to anonymise this data (remove the IP address) or delete it altogether from <a href="/privacy">this</a> page</p>
 
+                        {/* If we failed to fetch records, it'll stay as undefined, therefore we don't show that section then */}
                         {recordAmount !== undefined ? <div>
                             <hr />
                             By the way, <strong>{recordAmount}</strong> unique people have trusted this website to check their images!
@@ -140,8 +156,8 @@ function UploadPage() {
                     </Alert>
 
                     {!exifData ?
-                        <Alert variant="info">
-                            <p>To view the photos' EXIF information, please drag and drop your file on the box to the left.</p>
+                        <Alert variant="info" className="mp-0">
+                            To view the photos' EXIF information, please drag and drop your file on the box to the left.
                         </Alert>
                         :
                         <DisplayExif exif={exifData}></DisplayExif>

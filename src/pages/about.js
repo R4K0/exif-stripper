@@ -28,7 +28,7 @@ class About extends Component {
                     <Col>
                         <h3>What is this website?</h3>
                         <p>
-                            Exif-Toolset provides a way to <strike>manipulate, remove and</strike> read EXIF data from the pictures
+                            Exif-Toolset provides a way to remove and read EXIF data from the pictures you submit.
                         </p>
                     </Col>
 
@@ -76,6 +76,15 @@ class About extends Component {
 
                         <h5>What stops you from collecting such data?</h5>
                         <p>Good point. <strong>Absolutely nothing</strong>. It is really up to you whom to trust, but I know I'd rather put my trust in a student who put his name and face behind this website, rather than trusting multi billionaire companies known for reselling your data to the advertising companies.</p>
+                    
+                        <h5>But wait!</h5>
+                        <p>
+                            There is one way to verify good-intentions of this website. Use either wire-shark or good, old browser console to see what type of requests are being sent out to
+                            the external server. You'll see that when you submit the image, the image itself <strong>isn't</strong> being sent.<br/><br/>
+
+                            There is only one "phoning home" call on image submission. It's letting me know when our service is being used. No data is being sent out, but I do collect the user IPs.<br/><br/>
+                            This is not a big deal, as there is a <a href="/privacy">privacy page</a>, that allows you to either remove the data from our servers or make it anonymous by removing the IP information but leaving only the date you've used the service at.
+                        </p>
                     </Col>
 
                 </Row>
