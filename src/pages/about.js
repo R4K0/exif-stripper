@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Component } from "react";
 import { Alert, Col, Container, Row } from "react-bootstrap";
 
+// About page
 class About extends Component {
 
+    // Whenever the alert should be displayed (About alert)
     state = {
         showComponent: true
     }
@@ -26,7 +28,7 @@ class About extends Component {
 
                 <Row>
                     <Col>
-                        <h3>What is this website?</h3>
+                        <h3>What is this website about?</h3>
                         <p>
                             Exif-Toolset provides a way to remove and read EXIF data from the pictures you submit.
                         </p>
