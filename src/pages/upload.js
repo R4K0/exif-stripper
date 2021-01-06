@@ -1,16 +1,26 @@
-import { Component, useCallback, useState } from "react";
-import { Alert, Col, Container, Row, Table } from "react-bootstrap";
+import { Component, useCallback, useEffect, useState } from "react";
+import { Alert, Card, Col, Container, Row, Table } from "react-bootstrap";
 import { useDropzone } from "react-dropzone";
 import ExifParser from "exif-parser";
 import DisplayExif from './../components/exifdisplay';
 import piex from "piexifjs";
-import filesaver from "file-saver";
 import axios from "axios";
 
 function UploadPage() {
     const [currentImage, setImage] = useState();
     const [exifData, setDataExif] = useState(false);
     const [error, setError] = useState();
+    const [recordAmount, setRecords] = useState(undefined);
+
+    useEffect(() => {
+        axios.get('http://localhost:4000/statistics/distinct').then(response => {
+            if (response?.data?.count !== undefined) {
+                setRecords(response.data.count)
+            }
+        }).catch(err => {
+            console.log(err);
+        })
+    }, [])
 
     const onDrop = useCallback((file, err) => {
         if (err[0]?.errors?.length > 0) {
@@ -81,14 +91,14 @@ function UploadPage() {
             <Row>
                 <Col>
                     <h4>EXIF Inspector</h4>
-                    <div {...getRootProps()} style={{ borderStyle: currentImage ? "none" : "dotted" }} className={`${isDragActive && 'bg-secondary' || (!currentImage && 'bg-primary' || '')} text-white text-center`}>
+                    <Card {...getRootProps()} className={`${isDragActive && 'bg-secondary' || (!currentImage && 'bg-primary' || '')} text-white text-center align-self-center`}>
                         <input {...getInputProps()}></input>
                         {
                             currentImage ? <img src={currentImage} style={{ maxWidth: "400px", maxHeight: "300px"}}></img> : undefined
                         }
 
                         {isDragActive ? <p>Drop the image here!</p> : !currentImage ? <p>Drag and drop your image here (or click here)</p> : undefined}
-                    </div>
+                    </Card>
                 </Col>
 
                 <Col>
@@ -104,6 +114,11 @@ function UploadPage() {
                         <Alert.Heading>What is being saved?</Alert.Heading>
                         <p><strong>Neither</strong> your EXIF data or the picture is being saved. All that is being saved is your IP address and the date and time at which you've interacted with this service</p>
                         <p>You are <strong>able</strong> to anonymise this data (remove the IP address) or delete it altogether from <a href="/privacy">this</a> page</p>
+                    
+                        { recordAmount !== undefined ? <div>
+                            <hr />
+                            By the way, <strong>{recordAmount}</strong> unique people have trusted this website to check their images!
+                        </div> : undefined }
                     </Alert>
 
                     {!exifData ?

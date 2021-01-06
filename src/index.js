@@ -9,13 +9,13 @@ import { Router } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
-    <div style={{flex: 1}} className="content">
+    <div style={{ flex: 1 }} className="content">
       <Navigation />
       <App />
     </div>
 
 
-    <div className="text-center" style={{marginBottom: '1rem'}}>
+    <div className="text-center" style={{ marginBottom: '1rem' }}>
       Made with ❤️ by&nbsp;<a href="https://www.linkedin.com/in/milosz-milewski">Milosz Milewski</a>&nbsp;using React
     </div>
   </React.StrictMode>,
