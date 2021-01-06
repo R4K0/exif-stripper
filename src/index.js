@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Navigation from "./components/navbar";
-import { Router } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,7 +13,8 @@ ReactDOM.render(
       <App />
     </div>
 
-
+    {/* This took a few hacks, it is a "sticky" footer - Meaning it is always at the bottom of the page AND after all content has scrolled.
+    React does something differently so I had do take a different approach to this than usually*/}
     <div className="text-center" style={{ marginBottom: '1rem' }}>
       Made with ❤️ by&nbsp;<a href="https://www.linkedin.com/in/milosz-milewski">Milosz Milewski</a>&nbsp;using React
     </div>
