@@ -1,0 +1,3 @@
+[submodule "exif-backend"]
+	path = exif-backend
+	url = https://github.com/R4K0/exif-backend
