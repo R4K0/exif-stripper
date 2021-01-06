@@ -79,7 +79,7 @@ class About extends Component {
                     
                         <h5>But wait!</h5>
                         <p>
-                            There is one way to verify good-intentions of this website. Use either wire-shark or good, old browser console to see what type of requests are being sent out to
+                            There is one way to verify good-intentions of this website. Use either wire-shark or good old browser console to see what type of requests are being sent out to
                             the external server. You'll see that when you submit the image, the image itself <strong>isn't</strong> being sent.<br/><br/>
 
                             There is only one "phoning home" call on image submission. It's letting me know when our service is being used. No data is being sent out, but I do collect the user IPs.<br/><br/>
