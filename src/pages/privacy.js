@@ -17,7 +17,7 @@ function PrivacyPage() {
 
     // Upon the page load, we fetch statistics count related to us.
     function fetchCount(){
-        axios.get('http://localhost:4000/statistics/count').then(response => {
+        axios.get('/statistics/count').then(response => {
             if (response?.data?.count !== undefined) {
                 setRecords(response.data.count)
             }
@@ -42,12 +42,12 @@ function PrivacyPage() {
     async function processRequest(requestType) {
         closeModal()
 
-        const instance = axios.create({ baseURL: "http://localhost:4000" })
+        const instance = axios.create()
 
         switch (requestType) {
             case (RequestType.DELETE):
                 try {
-                    await instance.delete("statistics/delete")
+                    await instance.delete("/statistics/delete")
                 } catch (err) {
                     setAlertType("danger")
                     setAlertShow(err.response?.data || "An error occured :(")
@@ -62,7 +62,7 @@ function PrivacyPage() {
                 break;
             case (RequestType.ANON):
                 try {
-                    await instance.post("statistics/anonymize")
+                    await instance.post("/statistics/anonymize")
                 } catch (err) {
                     setAlertType("danger")
                     setAlertShow(err.response?.data || "An error occured :(")

@@ -22,7 +22,7 @@ function UploadPage() {
     // This is equivalent of componentDidMount, a hacky one, though. 
     useEffect(() => {
         // As we load into the page for the first time, request distinct amount of users that used the website.
-        axios.get('http://localhost:4000/statistics/distinct').then(response => {
+        axios.get('/statistics/distinct').then(response => {
             if (response?.data?.count !== undefined) {
                 setRecords(response.data.count)
             }
@@ -47,7 +47,7 @@ function UploadPage() {
             return;
         }
 
-        const instance = axios.create({ baseURL: "http://localhost:4000" })
+        const instance = axios.create()
 
         // Not much needed to pass, the back-end will take care of extracting the request IP by itself.
         instance.post("/statistics/add").catch(err => { })
