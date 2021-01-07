@@ -21,7 +21,7 @@ class About extends Component {
                         </p>
                         <hr />
                         <p>
-                            If you have any feedback, don't forget to pass it over along to milosz@rako.dev
+                            If you have any feedback, don't forget to pass it over along to inbox@miloszmilewski.dev
                         </p>
                     </Alert>
                 }
